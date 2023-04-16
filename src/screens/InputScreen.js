@@ -10,9 +10,14 @@ import DatePicker from "react-native-datepicker";
 import { Constants } from "../../constants";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 export default InputScreen = () => {
   const navigation = useNavigation();
+
+  const [birthYear, setBirthYear] = useState(null);
+  const [birthMonth, setBirthMonth] = useState(null);
+  const [birthDay, setBirthDay] = useState(null);
 
   const inputItems = [
     {
@@ -54,55 +59,38 @@ export default InputScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>정보 입력</Text>
-      <View style={styles.inputContainer}>
-        {inputItems.map((item) => (
-          <View key={item.key} style={styles.item}>
-            <Text style={styles.label}>{item.label}</Text>
-            {item.type === "text" ? (
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={styles.textInput}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    maxLength={item.length}
-                  />
-                )}
-                name={item.key}
-                defaultValue=""
-              />
-            ) : (
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Picker
-                    style={{ height: 50, width: 150 }}
-                    selectedValue={value}
-                    onValueChange={onChange}
-                  >
-                    {item.options.map((option, idx) => (
-                      <Picker.Item key={idx} label={option} value={option} />
-                    ))}
-                  </Picker>
-                )}
-                name={item.key}
-                defaultValue=""
-              />
-            )}
-            {errors[item.key] && (
-              <Text style={styles.errorText}>필수 항목입니다.</Text>
-            )}
-          </View>
-        ))}
-      </View>
+
+      <DatePicker
+        date={birthYear}
+        mode="year"
+        placeholder="select year"
+        format="YYYY"
+        maxDate={moment().year()}
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        onDateChange={(date) => setBirthYear(date)}
+      />
+      <DatePicker
+        date={birthMonth}
+        mode="month"
+        placeholder="select month"
+        format="MM"
+        maxDate={moment().format("YYYY-MM")}
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        onDateChange={(date) => setBirthMonth(date)}
+      />
+      <DatePicker
+        date={birthDay}
+        mode="date"
+        placeholder="select day"
+        format="DD"
+        maxDate={moment(`${birthYear}-${birthMonth}`, "YYYY-MM").daysInMonth()}
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        onDateChange={(date) => setBirthDay(date)}
+      />
+
       <TouchableOpacity
         style={styles.buttonContainer}
         onPress={handleSubmit(onSubmit)}
