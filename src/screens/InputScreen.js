@@ -1,16 +1,10 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import DatePicker from "react-native-datepicker";
-import { Constants } from "../../constants";
-import { useForm, Controller } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+// import DatePicker from "react-native-datepicker";
+// import { Constants } from "../../constants";
+// import { useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import moment from "moment";
 
 export default InputScreen = () => {
   const navigation = useNavigation();
@@ -18,6 +12,45 @@ export default InputScreen = () => {
   const [birthYear, setBirthYear] = useState(null);
   const [birthMonth, setBirthMonth] = useState(null);
   const [birthDay, setBirthDay] = useState(null);
+  const [calander, setCalander] = useState("양력");
+  const [maxDay, setMaxDay] = useState(null);
+
+  const maxYear = new Date().getFullYear();
+  const minYear = maxYear - 120;
+
+  const years = Array.from(
+    { length: maxYear - minYear + 1 },
+    (_, i) => `${minYear + i}`
+  );
+
+  const months = Array.from({ length: 12 }, (_, i) =>
+    i < 9 ? `0${i + 1}` : `${i + 1}`
+  );
+
+  const getDaysInMonth = (month, year) => new Date(year, month, 0).getDate();
+
+  const handleYearChange = (value) => {
+    setBirthYear(value);
+  };
+
+  const handleMonthChange = (value) => {
+    setBirthMonth(value);
+  };
+
+  const handleDayChange = (value) => {
+    setBirthDay(value);
+  };
+
+  useEffect(() => {
+    console.log(birthYear, birthMonth);
+    if (birthYear && birthMonth) {
+      console.log(birthYear, birthMonth);
+      const newMaxDay = getDaysInMonth(birthMonth, birthYear);
+      console.log(newMaxDay);
+      if (birthDay > newMaxDay) setBirthDay(null);
+      setMaxDay(newMaxDay);
+    }
+  }, [birthYear, birthMonth]);
 
   const inputItems = [
     {
@@ -46,55 +79,63 @@ export default InputScreen = () => {
     },
   ];
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
 
-  const onSubmit = (data) => {
-    navigation.navigate("Loading", { data });
+  const handleSubmit = () => {
+    navigation.navigate("Loading", {
+      birthYear,
+      birthMonth,
+      birthDay,
+      calander,
+    });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>정보 입력</Text>
-
-      <DatePicker
-        date={birthYear}
-        mode="year"
-        placeholder="select year"
-        format="YYYY"
-        maxDate={moment().year()}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        onDateChange={(date) => setBirthYear(date)}
-      />
-      <DatePicker
-        date={birthMonth}
-        mode="month"
-        placeholder="select month"
-        format="MM"
-        maxDate={moment().format("YYYY-MM")}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        onDateChange={(date) => setBirthMonth(date)}
-      />
-      <DatePicker
-        date={birthDay}
-        mode="date"
-        placeholder="select day"
-        format="DD"
-        maxDate={moment(`${birthYear}-${birthMonth}`, "YYYY-MM").daysInMonth()}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        onDateChange={(date) => setBirthDay(date)}
-      />
-
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={handleSubmit(onSubmit)}
+      <Picker
+        style={{ height: 50, width: 150 }}
+        selectedValue={birthYear}
+        onValueChange={handleYearChange}
       >
+        {years.map((year) => (
+          <Picker.Item key={year} label={year} value={year} />
+        ))}
+      </Picker>
+      <Picker
+        selectedValue={birthMonth}
+        onValueChange={handleMonthChange}
+        style={{ height: 50, width: 150 }}
+      >
+        {months.map((month) => (
+          <Picker.Item key={month} label={month} value={month} />
+        ))}
+      </Picker>
+      <Picker
+        selectedValue={birthDay}
+        onValueChange={handleDayChange}
+        style={{ height: 50, width: 150 }}
+      >
+        {birthMonth &&
+          birthYear &&
+          Array.from({ length: maxDay }, (_, i) =>
+            i < 9 ? `0${i + 1}` : `${i + 1}`
+          ).map((day) => <Picker.Item key={day} label={day} value={day} />)}
+      </Picker>
+      <Picker
+        selectedValue={calander}
+        onValueChange={(value) => setCalander(value)}
+        style={{ height: 50, width: 150 }}
+      >
+        <Picker.Item label="양력" value="solar" />
+        <Picker.Item label="음력" value="lunar" />
+      </Picker>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
         <Text style={styles.buttonText}>결과 보기</Text>
       </TouchableOpacity>
     </View>
