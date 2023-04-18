@@ -4,25 +4,29 @@ import { useNavigation } from "@react-navigation/native";
 import TypingText from "../utils/TypingText";
 
 const HomeScreen = () => {
+  console.log(process.env.REACT_APP_SERVER_URL);
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../assets/images/home-background.png")}
+        source={require("../../assets/images/main-background.jpg")}
         style={styles.backgroundImage}
       >
-        <TouchableOpacity style={styles.bubble}>
-          <TypingText
-            style={styles.text}
-            text="어서오게나. 2023년의 사주를 봐달라고?"
-          />
-        </TouchableOpacity>
+        <View style={styles.bubble}>
+          <TypingText text="어서오게나. 2023년의 운세를 봐달라고?" />
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Input")}
         >
-          <Text>운세보기</Text>
+          <ImageBackground
+            source={require("../../assets/images/button-background.png")}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          >
+            <Text style={styles.buttonText}>운세보기</Text>
+          </ImageBackground>
         </TouchableOpacity>
       </ImageBackground>
     </View>
@@ -39,39 +43,38 @@ const styles = {
   backgroundImage: {
     width: "100%",
     height: "100%",
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
+
   bubble: {
     position: "absolute",
-    top: 50,
-    left: 50,
+    top: 60,
+    alignSelf: "center",
     padding: 10,
-    backgroundColor: "white",
-    borderRadius: 10,
-    minWidth: "70%",
-  },
-  text: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: "center",
-    marginVertical: 20,
-    marginHorizontal: 40,
+    backgroundColor: "rgba(0, 0, 0, 1)",
+    // borderWidth: 1,
+    borderColor: "#dfbf9f",
+    borderRadius: 15,
+    width: "80%",
   },
   button: {
     position: "absolute",
     bottom: 50,
-    left: "40%",
-    backgroundColor: "#fbb785",
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 10,
+    width: "70%",
+    alignSelf: "center",
+    backgroundColor: "transparent",
+    borderRadius: 50,
   },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontFamily: "HeirofLightBold",
+    fontSize: 16,
+    textShadowColor: "rgba(0, 0, 0, 0.8)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 8,
     textAlign: "center",
+    margin: 20,
   },
 };
 
