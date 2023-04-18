@@ -2,10 +2,22 @@ import React from "react";
 import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TypingText from "../utils/TypingText";
+import { useFonts } from "expo-font";
 
 const HomeScreen = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
+
   const navigation = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    Heirof: require("../../assets/fonts/HeirofLightBold.ttf"),
+    NotoSans:
+      "https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap",
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -67,9 +79,8 @@ const styles = {
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold",
-    fontFamily: "HeirofLightBold",
-    fontSize: 16,
+    fontFamily: "Heirof",
+    fontSize: 18,
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 8,

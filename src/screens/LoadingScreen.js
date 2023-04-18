@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Image,
-} from "react-native";
-// import { Card, Button } from "react-native-elements";
+import React, { useEffect } from "react";
+import { View, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Axios from "axios";
-import Constants from "../../constants";
 
 export default LoadingScreen = ({ route }) => {
-  const data = route.params.data;
+  const navigation = useNavigation();
+
+  const data = route.params;
   console.log(data);
 
-  useEffect(async () => {
-    try {
-      // const res = await Axios.post("http://localhost:3000", {
-      //   data,
-      // });
-    } catch (e) {
-      console.log(e);
-    }
+  useEffect(() => {
+    const getFortune = async function () {
+      try {
+        const res = await Axios.post("http://192.168.0.5:3000/fortune", data);
+        navigation.navigate("Result", res.data.fortune);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getFortune();
   }, []);
 
   return (

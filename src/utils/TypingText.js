@@ -15,5 +15,15 @@ export default TypingText = ({ text }) => {
     }, 100);
   }, []);
 
-  return <Text>{displayedText}</Text>;
+  return <Text style={styles.text}>{displayedText}</Text>;
+};
+
+const styles = {
+  text: {
+    color: "#fff",
+    fontFamily: "NotoSans",
+    fontSize: 16,
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
 };
