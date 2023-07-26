@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TypingText from "../utils/TypingText";
 import { useFonts } from "expo-font";
+import styles from "../styles";
 
 const HomeScreen = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
@@ -11,8 +12,8 @@ const HomeScreen = () => {
 
   const [fontsLoaded] = useFonts({
     Heirof: require("../../assets/fonts/HeirofLightBold.ttf"),
-    NotoSans:
-      "https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap",
+    // NotoSans:
+    //   "https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap",
   });
 
   if (!fontsLoaded) {
@@ -43,50 +44,6 @@ const HomeScreen = () => {
       </ImageBackground>
     </View>
   );
-};
-
-const styles = {
-  container: {
-    flex: 1,
-    backgroundColor: "blue",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  backgroundImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-
-  bubble: {
-    position: "absolute",
-    top: 60,
-    alignSelf: "center",
-    padding: 10,
-    backgroundColor: "rgba(0, 0, 0, 1)",
-    // borderWidth: 1,
-    borderColor: "#dfbf9f",
-    borderRadius: 15,
-    width: "80%",
-  },
-  button: {
-    position: "absolute",
-    bottom: 50,
-    width: "70%",
-    alignSelf: "center",
-    backgroundColor: "transparent",
-    borderRadius: 50,
-  },
-  buttonText: {
-    color: "#fff",
-    fontFamily: "Heirof",
-    fontSize: 18,
-    textShadowColor: "rgba(0, 0, 0, 0.8)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 8,
-    textAlign: "center",
-    margin: 20,
-  },
 };
 
 export default HomeScreen;

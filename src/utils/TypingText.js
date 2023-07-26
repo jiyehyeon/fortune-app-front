@@ -21,7 +21,7 @@ export default TypingText = ({ text }) => {
 const styles = {
   text: {
     color: "#fff",
-    fontFamily: "NotoSans",
+    // fontFamily: "NotoSans",
     fontSize: 16,
     marginVertical: 10,
     marginHorizontal: 20,
