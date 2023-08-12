@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 
-export default LoadingScreen = ({ route }) => {
+export default ResultScreen = ({ route }) => {
   const fortuneText = route.params;
 
   return (
