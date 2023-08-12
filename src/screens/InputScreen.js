@@ -88,6 +88,10 @@ export default InputScreen = () => {
   // } = useForm();
 
   const handleSubmit = () => {
+    if (!birthYear || !birthMonth || !birthDay || !calander) {
+      alert("모든 항목을 입력해 주게나.");
+      return;
+    }
     navigation.navigate("Loading", {
       birthYear,
       birthMonth,

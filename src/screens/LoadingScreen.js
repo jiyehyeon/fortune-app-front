@@ -1,24 +1,27 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Axios from "axios";
+import { getFortune } from "../api/fortune";
 
 export default LoadingScreen = ({ route }) => {
   const navigation = useNavigation();
 
-  const data = route.params;
-  console.log(data);
+  const { birthYear, birthMonth, birthDay, calander } = route.params;
 
   useEffect(() => {
-    const getFortune = async function () {
+    (async function () {
       try {
-        const res = await Axios.post("http://192.168.0.5:3000/fortune", data);
-        navigation.navigate("Result", res.data.fortune);
+        const fortune = await getFortune(
+          birthYear,
+          birthMonth,
+          birthDay,
+          calander
+        );
+        navigation.navigate("Result", fortune);
       } catch (e) {
         console.log(e);
       }
-    };
-    getFortune();
+    })();
   }, []);
 
   return (
