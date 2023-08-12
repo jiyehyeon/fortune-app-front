@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "fortune-front",
-    "slug": "fortune-front",
+    "slug": "fortune-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["assets/fonts/*"],
+    "assetBundlePatterns": [
+      "assets/fonts/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "93fce873-d68f-4785-af2a-3323246dac5c"
+      }
+    },
+    "owner": "jy.hyun"
   }
 }
