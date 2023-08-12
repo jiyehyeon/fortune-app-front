@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ImageBackground, View, Text, TouchableOpacity } from "react-native";
+import { ImageBackground, View, Text, TouchableOpacity, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-// import DatePicker from "react-native-datepicker";
-// import { Constants } from "../../constants";
-// import { useForm, Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import styles from "../styles";
+import styles from "../styles/InputScreen";
 import TypingText from "../utils/TypingText";
 
 export default InputScreen = () => {
@@ -19,15 +16,6 @@ export default InputScreen = () => {
 
   const maxYear = new Date().getFullYear();
   const minYear = maxYear - 120;
-
-  const years = Array.from(
-    { length: maxYear - minYear + 1 },
-    (_, i) => `${minYear + i}`
-  );
-
-  const months = Array.from({ length: 12 }, (_, i) =>
-    i < 9 ? `0${i + 1}` : `${i + 1}`
-  );
 
   const getDaysInMonth = (month, year) => new Date(year, month, 0).getDate();
 
@@ -44,52 +32,36 @@ export default InputScreen = () => {
   };
 
   useEffect(() => {
-    console.log(birthYear, birthMonth);
     if (birthYear && birthMonth) {
-      console.log(birthYear, birthMonth);
       const newMaxDay = getDaysInMonth(birthMonth, birthYear);
-      console.log(newMaxDay);
       if (birthDay > newMaxDay) setBirthDay(null);
       setMaxDay(newMaxDay);
     }
   }, [birthYear, birthMonth]);
 
-  const inputItems = [
-    {
-      label: "출생년",
-      type: "dropdown",
-      key: "birthYear",
-      length: 4,
+  const pickerItems = {
+    years: Array.from(
+        { length: maxYear - minYear + 1 },
+        (_, i) => `${minYear + i}`
+    ),
+    months: Array.from({ length: 12 }, (_, i) =>
+      i < 9 ? `0${i + 1}` : `${i + 1}`
+    ),
+    days: Array.from({ length: maxDay }, (_, i) =>
+    i < 9 ? `0${i + 1}` : `${i + 1}`
+    ),
+    calander: [{
+      label: "양력",
+      value: "solar",
     },
     {
-      label: "출생월",
-      type: "dropdown",
-      key: "birthMonth",
-      length: 2,
-    },
-    {
-      label: "출생일",
-      type: "dropdown",
-      key: "birthDay",
-      options: Array.from({ length: 24 }, (_, i) => `${i}시 ~ ${i + 1}시`),
-    },
-    {
-      label: "양/음력",
-      type: "dropdown",
-      key: "calander",
-      options: ["양력", "음력"],
-    },
-  ];
-
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm();
+      label: "음력",
+      value: "lunar"
+    }]};
 
   const handleSubmit = () => {
     if (!birthYear || !birthMonth || !birthDay || !calander) {
-      alert("모든 항목을 입력해 주게나.");
+      Alert.alert('모든 항목을 입력해 주게나');
       return;
     }
     navigation.navigate("Loading", {
@@ -117,7 +89,7 @@ export default InputScreen = () => {
               selectedValue={birthYear}
               onValueChange={handleYearChange}
             >
-              {years.map((year) => (
+              {pickerItems.years.map((year) => (
                 <Picker.Item key={year} label={year} value={year} />
               ))}
             </Picker>
@@ -126,7 +98,7 @@ export default InputScreen = () => {
               onValueChange={handleMonthChange}
               style={{ height: 50, width: 150 }}
             >
-              {months.map((month) => (
+              {pickerItems.months.map((month) => (
                 <Picker.Item key={month} label={month} value={month} />
               ))}
             </Picker>
@@ -137,9 +109,7 @@ export default InputScreen = () => {
             >
               {birthMonth &&
                 birthYear &&
-                Array.from({ length: maxDay }, (_, i) =>
-                  i < 9 ? `0${i + 1}` : `${i + 1}`
-                ).map((day) => (
+                pickerItems.days.map((day) => (
                   <Picker.Item key={day} label={day} value={day} />
                 ))}
             </Picker>
@@ -148,8 +118,9 @@ export default InputScreen = () => {
               onValueChange={(value) => setCalander(value)}
               style={{ height: 50, width: 150 }}
             >
-              <Picker.Item label="양력" value="solar" />
-              <Picker.Item label="음력" value="lunar" />
+              {pickerItems.calander.map((cal) => (
+                <Picker.Item label={cal.label} value={cal.value} />
+              ))}
             </Picker>
           </ImageBackground>
         </View>

@@ -11,14 +11,12 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
-
   bubble: {
     position: "absolute",
     top: 60,
     alignSelf: "center",
     padding: 10,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    // borderWidth: 1,
     borderColor: "#dfbf9f",
     borderRadius: 15,
     width: "80%",

@@ -3,7 +3,7 @@ import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TypingText from "../utils/TypingText";
 import { useFonts } from "expo-font";
-import styles from "../styles";
+import styles from "../styles/InputScreen";
 
 const HomeScreen = () => {
   console.log(process.env.REACT_APP_SERVER_URL);
