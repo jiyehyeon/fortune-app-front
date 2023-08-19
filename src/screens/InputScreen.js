@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ImageBackground, View, Text, TouchableOpacity, Alert } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import RNPickerSelect from 'react-native-picker-select';
 import { useNavigation } from "@react-navigation/native";
 import styles from "../styles/InputScreen";
 import TypingText from "../utils/TypingText";
@@ -30,6 +30,10 @@ export default InputScreen = () => {
   const handleDayChange = (value) => {
     setBirthDay(value);
   };
+
+  const handleCalChange = (value) => {
+    setCalander(value);
+  }
 
   useEffect(() => {
     if (birthYear && birthMonth) {
@@ -84,44 +88,39 @@ export default InputScreen = () => {
         {/* 종이모양 */}
         <View style={styles.container}>
           <ImageBackground>
-            <Picker
-              style={{ height: 50, width: 150 }}
-              selectedValue={birthYear}
+            <RNPickerSelect
+              placeholder={{
+                label: '출생년도',
+                value: birthYear,
+            }}
               onValueChange={handleYearChange}
-            >
-              {pickerItems.years.map((year) => (
-                <Picker.Item key={year} label={year} value={year} />
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={birthMonth}
+              items={ pickerItems.years.map((year) => ({label: `${year}년`, value:year})) }
+            />
+            <RNPickerSelect
+              placeholder={{
+                label: '출생월',
+                value: birthMonth,
+              }}
               onValueChange={handleMonthChange}
-              style={{ height: 50, width: 150 }}
-            >
-              {pickerItems.months.map((month) => (
-                <Picker.Item key={month} label={month} value={month} />
-              ))}
-            </Picker>
-            <Picker
-              selectedValue={birthDay}
+              items={ pickerItems.months.map((month) => ({label: `${month}월`, value:month})) }
+            />
+            <RNPickerSelect
+              placeholder={{
+                label: '출생일',
+                value: birthDay,
+              }}            
               onValueChange={handleDayChange}
-              style={{ height: 50, width: 150 }}
-            >
-              {birthMonth &&
-                birthYear &&
-                pickerItems.days.map((day) => (
-                  <Picker.Item key={day} label={day} value={day} />
-                ))}
-            </Picker>
-            <Picker
-              selectedValue={calander}
-              onValueChange={(value) => setCalander(value)}
-              style={{ height: 50, width: 150 }}
-            >
-              {pickerItems.calander.map((cal) => (
-                <Picker.Item label={cal.label} value={cal.value} />
-              ))}
-            </Picker>
+              disabled={ birthMonth && birthYear? false:true }
+              items={ pickerItems.days.map((day) => ({label: `${day}일`, value: day}))}
+            />
+            <RNPickerSelect
+              placeholder={{
+                label: '양력/음력',
+                value: birthYear,
+              }}            
+              onValueChange={handleCalChange}
+              items={ pickerItems.calander }
+            />
           </ImageBackground>
         </View>
         <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
